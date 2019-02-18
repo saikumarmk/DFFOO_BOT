@@ -4,7 +4,7 @@ import json
 # Caution: This only works on python 3.7 + 
 # In addition, you must run the semi - official build
 
-token = ''
+token = 'MzM4MTA0ODgzNzkyMzE0Mzc5.D0wtTA.uZE6hPNUj4BO6c2_k1lPju3wZg4'
 client = commands.Bot(command_prefix = "a!")
 
 # What is an event?

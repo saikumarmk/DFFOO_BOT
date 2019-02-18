@@ -18,9 +18,9 @@ class Commands:
 		self.client = client
 
 	@commands.command()
-	async def unit(self,context,characterName):
+	async def info(self,context,characterName):
 		'''
-		Usage is a!unit <character name> and will return general information about a bot.
+		Usage is a!info <character name> and will return general information about a bot.
 		'''		
 		try:
 			name = chars[characterName]
@@ -74,52 +74,6 @@ class Commands:
 
 			await context.send(embed=e)
 
-	@commands.command()
-	async def artifacts(self,context,characterName):
-		'''
-		Usage is a!artifacts <character name> and returns artifact passives.
-		'''		
-		try:
-			name = chars[characterName]
-		except KeyError:
-			await context.send("Character not found")
-		else:
-			charinfo = json.loads(open('dependencies/'+name+'.json','r',encoding='utf-8').read())
-			e = discord.Embed(
-				title = charinfo['Name'],
-				colour = colors[charinfo['Crystal']],
-				)
-			e.set_thumbnail(url=charinfo['Picture'])
-			e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
-			e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
-			for i in charinfo["Artifacts"].keys():
-				e.add_field(name=i,value=charinfo["Artifacts"][i],inline=False)
-
-			await context.send(embed=e)
-
-
-	@commands.command()
-	async def passives(self,context,characterName):
-		'''
-		Usage is a!passives <character name> and rerturns passive skills
-		'''
-		try:
-			name = chars[characterName]
-		except KeyError:
-			await context.send("Character not found")
-		else:
-			charinfo = json.loads(open('dependencies/'+name+'.json','r',encoding='utf-8').read())
-			e = discord.Embed(
-				title = charinfo['Name'],
-				colour = colors[charinfo['Crystal']],
-				)
-			e.set_thumbnail(url=charinfo['Picture'])
-			e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
-			e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
-			for i in charinfo["Passives"].keys():
-				e.add_field(name=i,value=charinfo["Passives"][i],inline=False)
-
-			await context.send(embed=e)
 
 	@commands.command()
 	async def gear(self,context,characterName):
@@ -169,3 +123,54 @@ class Commands:
 
 def setup(client):
 	client.add_cog(Commands(client))
+
+
+'''
+@commands.command()
+async def passives(self,context,characterName):
+
+	Usage is a!passives <character name> and rerturns passive skills
+
+	try:
+		name = chars[characterName]
+	except KeyError:
+		await context.send("Character not found")
+	else:
+		charinfo = json.loads(open('dependencies/'+name+'.json','r',encoding='utf-8').read())
+		e = discord.Embed(
+			title = charinfo['Name'],
+			colour = colors[charinfo['Crystal']],
+			)
+		e.set_thumbnail(url=charinfo['Picture'])
+		e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
+		e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
+		for i in charinfo["Passives"].keys():
+			e.add_field(name=i,value=charinfo["Passives"][i],inline=False)
+
+		await context.send(embed=e)
+'''
+
+'''
+@commands.command()
+async def artifacts(self,context,characterName):
+
+	Usage is a!artifacts <character name> and returns artifact passives.
+
+	try:
+		name = chars[characterName]
+	except KeyError:
+		await context.send("Character not found")
+	else:
+		charinfo = json.loads(open('dependencies/'+name+'.json','r',encoding='utf-8').read())
+		e = discord.Embed(
+			title = charinfo['Name'],
+			colour = colors[charinfo['Crystal']],
+			)
+		e.set_thumbnail(url=charinfo['Picture'])
+		e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
+		e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
+		for i in charinfo["Artifacts"].keys():
+			e.add_field(name=i,value=charinfo["Artifacts"][i],inline=False)
+
+		await context.send(embed=e)
+'''

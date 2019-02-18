@@ -26,6 +26,8 @@ lst= charpage.body.div.main.div.ul
 charnames = [l.find("span",{"class":"name"}).string for l in lst] # use this for their name
 charurl = [l.find("a",{"class":"imageLink"})['href'][1:] for l in lst]
 chars = dict(zip(charnames,charurl))
+chars["Cecil (DK)"] = "cecil"
+chars.pop("Cecil (Dark Knight)")
 '''
 
 # Dumps Character Info
