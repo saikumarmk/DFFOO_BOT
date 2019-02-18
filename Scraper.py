@@ -17,8 +17,8 @@ charpage = "/characters"
 
 
 #chars = json.loads()
-chars = json.loads(open('charnames.json','r').read())
-
+chars = json.loads(open('dependencies/charnames.json','r').read())
+'''
 # Retrieve Page Name
 charpage = bs_parse(root+charpage)
 lst= charpage.body.div.main.div.ul    
@@ -26,7 +26,7 @@ lst= charpage.body.div.main.div.ul
 charnames = [l.find("span",{"class":"name"}).string for l in lst] # use this for their name
 charurl = [l.find("a",{"class":"imageLink"})['href'][1:] for l in lst]
 chars = dict(zip(charnames,charurl))
-
+'''
 
 # Dumps Character Info
 def getCharacter(charName):
@@ -116,8 +116,12 @@ def getCharacter(charName):
     for r in result:
         nm = r.find("td",{"class":"gearTitle"}).a.div.text
         ef = r.find("td",{"class":"gearEffect"}).div.text
-        weapons[nm] = ef
-    
+        if r.find("span",{"class":"attrBlock silver"}):
+            continue
+        cp = r.find_all("span","attrBlock")[1].text
+        nm = "{} CP: {}".format(nm,cp)
+        weapons[nm] = ef.encode('ascii', 'ignore').decode("utf-8")
+
     return {"Name":name,
             "Crystal":crystal,
             "Weapon":weapon,
@@ -129,10 +133,9 @@ def getCharacter(charName):
             "Weapons":weapons}
 
 
-
+#getCharacter(chars["Vivi"])
 
 for i in chars.values():
     #print(i)
     with open('dependencies/'+i+'.json','w') as u:
         json.dump(getCharacter(i),u)
-
