@@ -18,7 +18,7 @@ charpage = "/characters"
 
 #chars = json.loads()
 chars = json.loads(open('dependencies/charnames.json','r').read())
-'''
+
 # Retrieve Page Name
 charpage = bs_parse(root+charpage)
 lst= charpage.body.div.main.div.ul    
@@ -28,7 +28,6 @@ charurl = [l.find("a",{"class":"imageLink"})['href'][1:] for l in lst]
 chars = dict(zip(charnames,charurl))
 chars["Cecil (DK)"] = "cecil"
 chars.pop("Cecil (Dark Knight)")
-'''
 
 # Dumps Character Info
 def getCharacter(charName):
