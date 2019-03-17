@@ -17,7 +17,7 @@ charpage = "/characters"
 
 
 #chars = json.loads()
-chars = json.loads(open('dependencies/charnames.json','r').read())
+#chars = json.loads(open('dependencies/charnames.json','r').read())
 
 # Retrieve Page Name
 charpage = bs_parse(root+charpage)
@@ -76,8 +76,10 @@ def getCharacter(charName):
         allspans = set(row.find('td',{"class":"description"}).find_all("div")[0].find_all("span"))
         nm = allspans - icons
         nmn = nm.pop()
-        #nams = row.find('td',{"class":"description"}).find_all("span")[1].text  
-        commands[cols] = (nmn.text).encode('ascii', 'ignore').decode("utf-8") # Get rid of empty values
+        #nams = row.find('td',{"class":"description"}).find_all("span")[1].text
+
+        ltx = " ".join([n if type(n)==type(nmn.contents[0]) else "" for n in nmn.contents])
+        commands[cols] = ltx # Get rid of empty values
 
 
     # Retrieve Passive Abilities
@@ -89,7 +91,7 @@ def getCharacter(charName):
         comb = row.find_all('td')
         n = comb[0].find_all('div')[0].text
         e = comb[1].find_all('div')[0].text
-        passives[n] = e.encode('ascii', 'ignore').decode("utf-8") # Get rid of empty values
+        passives[n] = e.encode("ascii", "replace").decode().replace("?"," ") # Get rid of empty values
 
 
     # Retrieve Artifact passives list
@@ -105,7 +107,7 @@ def getCharacter(charName):
         
         n = row[0].find("td",{"class":"passive"}).find_all("div")[0].text
         effect = row[1].find('td',{"class":"effect max"}).text
-        artifacts[n] = effect.encode('ascii', 'ignore').decode("utf-8") # Get rid of empty values
+        artifacts[n] = effect.encode("ascii", "replace").decode().replace("?"," ") # Get rid of empty values
     
     # Retrieve Weapons
     table = soup.find("div",{"class":"gear"}).table
@@ -114,14 +116,14 @@ def getCharacter(charName):
     Rrows = set(table_body.find_all('tr'))
     Crows = set(table_body.find_all('tr','delimiter'))
     result = list(Rrows - Crows)
-    for r in result:
+    for r in reversed(result):
         nm = r.find("td",{"class":"gearTitle"}).a.div.text
         ef = r.find("td",{"class":"gearEffect"}).div.text
         if r.find("span",{"class":"attrBlock silver"}):
             continue
         cp = r.find_all("span","attrBlock")[1].text
         nm = "{} CP: {}".format(nm,cp)
-        weapons[nm] = ef.encode('ascii', 'ignore').decode("utf-8")
+        weapons[nm] = ef.encode("ascii", "replace").decode().replace("?"," ")
 
     return {"Name":name,
             "Crystal":crystal,
@@ -133,10 +135,10 @@ def getCharacter(charName):
             "Passives":passives,
             "Weapons":weapons}
 
+def update_db():
+	for i in chars.values():
+	    #print(i)
+	    with open('dependencies/'+i+'.json','w') as u:
+	        json.dump(getCharacter(i),u)
 
-#getCharacter(chars["Vivi"])
-
-for i in chars.values():
-    #print(i)
-    with open('dependencies/'+i+'.json','w') as u:
-        json.dump(getCharacter(i),u)
+update_db()

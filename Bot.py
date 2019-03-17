@@ -6,7 +6,7 @@ import json
 
 token = ''
 client = commands.Bot(command_prefix = "a!")
-
+client.remove_command('help')
 # What is an event?
 # An event is an action that happens inside discord
 # The bot can see this and react in some way, with the functions we define for it.
@@ -40,6 +40,8 @@ etc
 Full link here:
 https://discordpy.readthedocs.io/en/rewrite/api.html#discord.Message
 '''
+
+
 @client.command()
 async def clean(context,amount=10):
 	'''

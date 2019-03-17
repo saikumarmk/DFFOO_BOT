@@ -28,8 +28,33 @@ class Commands:
 		self.client = client
 
 	@commands.command()
+	#commands.has_permissions(add_reactions=True,embed_links=True)
+	async def help(self,ctx,cmd):
+		file = json.loads(open('helpcmd.json','r',encoding='utf-8').read())
+		if not cmd:
+			# general help command
+			print("AWSD")
+			
+			halp=discord.Embed(title='General functions',
+								description='Use `!help `command` to find out more about them!')
+			for i,j in file.items():
+				halp.add_field(name=i,value=j,inline=False)
+			#await ctx.message.add_reaction(emoji='✉')
+			await ctx.send('',embed=halp)
+		else:
+			try:
+				print(cmd)
+				fn = file[cmd]
+
+			except KeyError:
+				await ctx.send("Command not found.")
+			else:
+				halp = discord.Embed(title=cmd,description=fn)
+				await ctx.send('',embed=halp)
+
+	@commands.command()
 	async def info(self,context,*characterName):
-		'''
+		'''	
 		Usage is a!info <character name> and will return general information about a bot.
 		'''		
 		try:
@@ -39,6 +64,7 @@ class Commands:
 		except KeyError:
 			await context.send("Character not found")
 		else:
+
 			charinfo = json.loads(open('dependencies/'+name+'.json','r',encoding='utf-8').read())
 			e = discord.Embed(
 				title = charinfo['Name'],
@@ -47,12 +73,13 @@ class Commands:
 				)
 			e.set_thumbnail(url=charinfo['Picture'])
 			e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
+			print(charinfo["Commands"])
 			e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
 			#e.add_field(name="Stats",value=charinfo['Stats'],inline=True)
 			#e.add_field(name="Commands",value=charinfo['Commands'],inline=True)
 			try:
 				for i in charinfo["Commands"].keys():
-					e.add_field(name=i,value=charinfo["Commands"][i],inline=False)				
+					e.add_field(name=i,value=charinfo["Commands"][i].replace("  "," "),inline=False)				
 				topP = passives[nm]
 
 			except KeyError:
@@ -84,6 +111,7 @@ class Commands:
 		except KeyError:
 			await context.send("Character not found")
 		else:
+
 			charinfo = json.loads(open('dependencies/'+name+'.json','r',encoding='utf-8').read())
 			e = discord.Embed(
 				title = charinfo['Name'],
@@ -93,7 +121,7 @@ class Commands:
 			e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
 			e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
 			for i in charinfo["Commands"].keys():
-				e.add_field(name=i,value=charinfo["Commands"][i],inline=False)
+				e.add_field(name=i,value=charinfo["Commands"][i].replace("  "," "),inline=False)
 
 			await context.send(embed=e)
 
@@ -143,6 +171,7 @@ class Commands:
 				e.add_field(name=i,value=charinfo["Stats"][i],inline=False)
 
 			await context.send(embed=e)
+
 
 def setup(client):
 	client.add_cog(Commands(client))

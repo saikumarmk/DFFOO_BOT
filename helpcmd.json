@@ -1,0 +1,5 @@
+{"help":"Returns this function!",
+"info":"Usage: a!info <character name>\n Returns: Commands, Passives and General information about a character.",
+"abilities":"Usage: a!abilities <character name>\n Returns: All command abilities for a character.",
+"gear":"Usage: a!gear <character name>\n Returns: All gear for a character.",
+"stats":"Usage: a!stats <character name>\n Returns the stats of a character at various levels."}
