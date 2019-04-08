@@ -1,10 +1,11 @@
-import discord
+import discord,os
 from discord.ext import commands
 import json
 # Caution: This only works on python 3.7 + 
 # In addition, you must run the semi - official build
 
-token = ''
+TOKEN = os.environ['token']
+
 client = commands.Bot(command_prefix = "a!")
 client.remove_command('help')
 # What is an event?
@@ -78,5 +79,5 @@ async def echo(context,*args):
 async def stop(context):
 	await client.close()
 
-client.run(token)
+client.run(TOKEN)
 
