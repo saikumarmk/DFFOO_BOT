@@ -4,7 +4,7 @@ import json
 # Caution: This only works on python 3.7 + 
 # In addition, you must run the semi - official build
 
-TOKEN = os.environ['token']
+#TOKEN = os.environ['token']
 
 client = commands.Bot(command_prefix = "a!")
 client.remove_command('help')
@@ -84,5 +84,5 @@ async def assd(context):
 
 
 
-client.run(TOKEN)
+client.run('MzM4MTA0ODgzNzkyMzE0Mzc5.XKtLkQ.OxjjFF-0lrUEbDwPJHTcnEwYS0k')
 
