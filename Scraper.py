@@ -29,6 +29,10 @@ chars = dict(zip(charnames,charurl))
 chars["Cecil (DK)"] = "cecil"
 chars.pop("Cecil (Dark Knight)")
 
+with open('dependencies/charnames.json','w') as u:
+    json.dump(chars,u)
+
+
 # Dumps Character Info
 def getCharacter(charName):
     soup = bs_parse(root+"/"+charName)
@@ -42,11 +46,11 @@ def getCharacter(charName):
     name = soup.find("h2",{"class":"header"}).string
 
     # Retrieve Picture URL
-    picture = soup.find("div",{"class":"bgImage"})['style']
-    start_pt = picture.find("\"")
-    end_pt = picture.find("\"", start_pt + 1)
-    picture = picture[start_pt + 1: end_pt]
+    picture = soup.find("img",{"class":"artwork_image"})['src']
+    print(picture)
+
     pictureurl = root+picture
+
 
     # Retrieve Stats
     table = soup.find("div",{"class":"stats"}).table
@@ -140,5 +144,6 @@ def update_db():
 	    #print(i)
 	    with open('dependencies/'+i+'.json','w') as u:
 	        json.dump(getCharacter(i),u)
+
 
 update_db()

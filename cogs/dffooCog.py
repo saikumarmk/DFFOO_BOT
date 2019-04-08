@@ -58,8 +58,10 @@ class Commands:
 		Usage is a!info <character name> and will return general information about a bot.
 		'''		
 		try:
-			nm = " ".join([f for f in characterName])
-
+			if len(characterName) == 1:
+				nm = " ".join([f for f in characterName]).capitalize()
+			else:
+				nm = " ".join([f for f in characterName])
 			name = chars[nm]
 		except KeyError:
 			await context.send("Character not found")
@@ -102,12 +104,16 @@ class Commands:
 			
 
 	@commands.command()
-	async def abilities(self,context,characterName):
+	async def abilities(self,context,*characterName):
 		'''
 		Usage is a!abilities <character name> and will return command abilities.
 		'''
 		try:
-			name = chars[characterName]
+			if len(characterName) == 1:
+				nm = " ".join([f for f in characterName]).capitalize()
+			else:
+				nm = " ".join([f for f in characterName])
+			name = chars[nm]
 		except KeyError:
 			await context.send("Character not found")
 		else:
@@ -127,12 +133,16 @@ class Commands:
 
 
 	@commands.command()
-	async def gear(self,context,characterName):
+	async def gear(self,context,*characterName):
 		'''
 		Usage is a!gear <character name> and returns all gear for a character
 		'''
 		try:
-			name = chars[characterName]
+			if len(characterName) == 1:
+				nm = " ".join([f for f in characterName]).capitalize()
+			else:
+				nm = " ".join([f for f in characterName])
+			name = chars[nm]
 		except KeyError:
 			await context.send("Character not found")
 		else:
@@ -150,12 +160,16 @@ class Commands:
 			await context.send(embed=e)
 
 	@commands.command()
-	async def stats(self,context,characterName):
+	async def stats(self,context,*characterName):
 		'''
 		Usage is a!stats <character name> and returns all stats for a character
 		'''
 		try:
-			name = chars[characterName]
+			if len(characterName) == 1:
+				nm = " ".join([f for f in characterName]).capitalize()
+			else:
+				nm = " ".join([f for f in characterName])
+			name = chars[nm]
 		except KeyError:
 			await context.send("Character not found")
 		else:

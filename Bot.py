@@ -128,8 +128,10 @@ async def info(context,*characterName):
 	Usage is a!info <character name> and will return general information about a bot.
 	'''		
 	try:
-		nm = " ".join([f for f in characterName])
-
+		if len(characterName) == 1:
+			nm = " ".join([f for f in characterName]).capitalize()
+		else:
+			nm = " ".join([f for f in characterName])
 		name = chars[nm]
 	except KeyError:
 		await context.send("Character not found")
@@ -177,7 +179,11 @@ async def abilities(context,characterName):
 	Usage is a!abilities <character name> and will return command abilities.
 	'''
 	try:
-		name = chars[characterName]
+		if len(characterName) == 1:
+			nm = " ".join([f for f in characterName]).capitalize()
+		else:
+			nm = " ".join([f for f in characterName])
+		name = chars[nm]
 	except KeyError:
 		await context.send("Character not found")
 	else:
@@ -202,7 +208,11 @@ async def gear(context,characterName):
 	Usage is a!gear <character name> and returns all gear for a character
 	'''
 	try:
-		name = chars[characterName]
+		if len(characterName) == 1:
+			nm = " ".join([f for f in characterName]).capitalize()
+		else:
+			nm = " ".join([f for f in characterName])
+		name = chars[nm]
 	except KeyError:
 		await context.send("Character not found")
 	else:
@@ -225,7 +235,11 @@ async def stats(context,characterName):
 	Usage is a!stats <character name> and returns all stats for a character
 	'''
 	try:
-		name = chars[characterName]
+		if len(characterName) == 1:
+			nm = " ".join([f for f in characterName]).capitalize()
+		else:
+			nm = " ".join([f for f in characterName])
+		name = chars[nm]
 	except KeyError:
 		await context.send("Character not found")
 	else:
