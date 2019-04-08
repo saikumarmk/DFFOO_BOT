@@ -4,7 +4,7 @@ import json
 # Caution: This only works on python 3.7 + 
 # In addition, you must run the semi - official build
 
-#TOKEN = os.environ['token']
+TOKEN = os.environ['token']
 
 client = commands.Bot(command_prefix = "a!")
 client.remove_command('help')
@@ -27,7 +27,7 @@ if __name__ == '__main__':
 		except Exception as e:
 			print("{} cannot be loaded [{}]".format(extension,e))
 '''
-client.load_extension("cogs.dffooCog")
+#client.load_extension("cogs.dffooCog")
 
 
 # A command tells the bot to do specific things
@@ -82,9 +82,7 @@ async def echo(context,*args):
 async def assd(context):
 	await client.close()
 
-@client.command()
-async def test(context):
-	await context.send
 
-client.run(tk)
+
+client.run(TOKEN)
 
