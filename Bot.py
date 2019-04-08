@@ -18,6 +18,7 @@ async def on_ready():
 	await client.change_presence(status = discord.Status.online,activity=discord.Game(name="Tech Support"))
 
 # Load extensions
+'''
 extensions = ['Cogs']
 if __name__ == '__main__':
 	for extension in extensions:
@@ -25,6 +26,8 @@ if __name__ == '__main__':
 			client.load_extension(extension)
 		except Exception as e:
 			print("{} cannot be loaded [{}]".format(extension,e))
+'''
+client.load_extension("cogs.dffooCog")
 
 
 # A command tells the bot to do specific things
@@ -76,8 +79,12 @@ async def echo(context,*args):
 	await context.send(out)
 
 @client.command()
-async def stop(context):
+async def assd(context):
 	await client.close()
 
+@client.command()
+async def test(context):
+	await context.send
+#tk 
 client.run(TOKEN)
 
