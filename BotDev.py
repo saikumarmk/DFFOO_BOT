@@ -27,7 +27,7 @@ if __name__ == '__main__':
 		except Exception as e:
 			print("{} cannot be loaded [{}]".format(extension,e))
 '''
-#client.load_extension("cogs.dffooCog")
+client.load_extension("cogs.dffooCog")
 
 
 # A command tells the bot to do specific things
