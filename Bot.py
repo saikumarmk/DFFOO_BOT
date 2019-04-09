@@ -98,7 +98,6 @@ async def assd(context):
 ##############################
 
 @client.command()
-#commands.has_permissions(add_reactions=True,embed_links=True)
 async def help(ctx,cmd):
 	file = json.loads(open('helpcmd.json','r',encoding='utf-8').read())
 	if not cmd:
@@ -163,18 +162,10 @@ async def info(context,*characterName):
 				e.add_field(name="Passive {}".format(i+1),value=j,inline=False)
 				e.set_footer(text="PLEASE NOTE: Passives are Kite's World Recommendations")
 			await context.send(embed=e)
-
-		'''
-		e.add_field(name="Shining Shield",value="Target: 5 turns Shield (reduces damage equal to own INT BRV ×2.3); 5 turns MAX BRV Up I; grants BRV ×1.5 High turn rate",inline=False)
-		e.add_field(name="Throw Buckler", value="Ranged BRV attack High turn rate Draws target's attention for 5 turns with Lock Self: 5 turns Shield (reduces damage equal to own INT BRV ×2.3); 5 turns ATK Up I",inline=True)
-		e.add_field(name="Shining Wave", value="2-hit ranged BRV attack + HP attack BRV damage increased based on total resistance value of party's active Shield effects Greatly restores party's HP based on HP damage dealt Recovery limit: 10% of MAX HP HP recovered in excess of MAX HP added to BRV Moderately increases SPD for 5 turns",inline=True)
-		e.add_field(name="Top Passives", value="Class Change Boost 2 Star > Int Brv +170 > Mbrv +330", inline=False)
-		
-		'''
 		
 
 @client.command()
-async def abilities(context,characterName):
+async def abilities(context,*characterName):
 	'''
 	Usage is a!abilities <character name> and will return command abilities.
 	'''
@@ -203,7 +194,7 @@ async def abilities(context,characterName):
 
 
 @client.command()
-async def gear(context,characterName):
+async def gear(context,*characterName):
 	'''
 	Usage is a!gear <character name> and returns all gear for a character
 	'''
@@ -230,7 +221,7 @@ async def gear(context,characterName):
 		await context.send(embed=e)
 
 @client.command()
-async def stats(context,characterName):
+async def stats(context,*characterName):
 	'''
 	Usage is a!stats <character name> and returns all stats for a character
 	'''
