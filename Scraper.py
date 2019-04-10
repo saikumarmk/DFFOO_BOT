@@ -24,6 +24,7 @@ charpage = bs_parse(root+charpage)
 lst= charpage.body.div.main.div.ul    
 
 charnames = [l.find("span",{"class":"name"}).string for l in lst] # use this for their name
+print(charnames)
 charurl = [l.find("a",{"class":"imageLink"})['href'][1:] for l in lst]
 chars = dict(zip(charnames,charurl))
 chars["Cecil (DK)"] = "cecil"
@@ -99,11 +100,14 @@ def getCharacter(charName):
 
 
     # Retrieve Artifact passives list
-    table = soup.find("div",{"class":"artifacts"}).table
-    table_body = table.find('tbody')
+    '''
+    table = soup.find("div",{"class":"artifacts"}).table # this is undefined for some reason
+
+    table_body = table.find('tbody') # error here
     artifacts = {}
     rows = table_body.find_all('tr')
     cutrows = []
+ 
     for i in range(0,len(rows),2):
         cutrows.append([rows[i],rows[i+1]])
         
@@ -112,7 +116,8 @@ def getCharacter(charName):
         n = row[0].find("td",{"class":"passive"}).find_all("div")[0].text
         effect = row[1].find('td',{"class":"effect max"}).text
         artifacts[n] = effect.encode("ascii", "replace").decode().replace("?"," ") # Get rid of empty values
-    
+    '''
+
     # Retrieve Weapons
     table = soup.find("div",{"class":"gear"}).table
     table_body = table.find('tbody')
@@ -135,7 +140,7 @@ def getCharacter(charName):
             "Picture":pictureurl,
             "Stats":stats,
             "Commands":commands,
-            "Artifacts":artifacts,
+            #"Artifacts":artifacts,
             "Passives":passives,
             "Weapons":weapons}
 
