@@ -159,6 +159,8 @@ async def info(context,*characterName):
 			
 		else:
 			for (i,j) in enumerate(topP):
+				if not j:
+					continue
 				e.add_field(name="Passive {}".format(i+1),value=j,inline=False)
 				e.set_footer(text="PLEASE NOTE: Passives are Kite's World Recommendations")
 			await context.send(embed=e)

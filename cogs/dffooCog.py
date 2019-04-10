@@ -66,7 +66,6 @@ class Commands:
 		except KeyError:
 			await context.send("Character not found")
 		else:
-
 			charinfo = json.loads(open('dependencies/'+name+'.json','r',encoding='utf-8').read())
 			e = discord.Embed(
 				title = charinfo['Name'],
@@ -76,20 +75,27 @@ class Commands:
 			e.set_thumbnail(url=charinfo['Picture'])
 			e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
 			print(charinfo["Commands"])
+
 			e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
 			#e.add_field(name="Stats",value=charinfo['Stats'],inline=True)
 			#e.add_field(name="Commands",value=charinfo['Commands'],inline=True)
 			try:
+
 				for i in charinfo["Commands"].keys():
 					e.add_field(name=i,value=charinfo["Commands"][i].replace("  "," "),inline=False)				
 				topP = passives[nm]
 
 			except KeyError:
+
 				e.add_field(name="Recommended Passives",value="Not added",inline=False)
 				await context.send(embed=e)
 				
 			else:
+
 				for (i,j) in enumerate(topP):
+					if not j:
+						continue
+					print(i,j)
 					e.add_field(name="Passive {}".format(i+1),value=j,inline=False)
 					e.set_footer(text="PLEASE NOTE: Passives are Kite's World Recommendations")
 				await context.send(embed=e)
