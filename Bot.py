@@ -6,8 +6,8 @@ import json
 
 
 # DEPENDENCIES
-chars = json.loads(open('dependencies/charnames.json','r',encoding='utf-8').read())
-
+chars = json.loads(open('dependencies/GL/charnames.json','r',encoding='utf-8').read())
+Jchars = json.loads(open('dependencies/JP/charnames.json','r',encoding='utf-8').read())
 
 colors = {
 "Black":discord.Colour.default(),
@@ -19,7 +19,7 @@ colors = {
 
 passives = {}
 
-with open("dependencies/artifactpriority.csv") as w:
+with open("dependencies/OTHER/artifactpriority.csv") as w:
 	for d in w.readlines():
 		a = d.split(',')
 		passives[a[0]] =[a[1],a[3],a[5]]
@@ -28,7 +28,7 @@ passives.pop('')
 
 # Environment variables
 
-TOKEN = os.environ['token']
+#TOKEN = os.environ['token']
 client = commands.Bot(command_prefix = "a!")
 client.remove_command('help')
 # What is an event?
@@ -95,14 +95,13 @@ async def echo(context,*args):
 async def assd(context):
 	await client.close()
 
-##############################
+############################## MAIN COMMANDS
 
 @client.command()
 async def help(ctx,cmd):
-	file = json.loads(open('helpcmd.json','r',encoding='utf-8').read())
+	file = json.loads(open('dependencies/OTHER/helpcmd.json','r',encoding='utf-8').read())
 	if not cmd:
 		# general help command
-		print("AWSD")
 		
 		halp=discord.Embed(title='General functions',
 							description='Use `!help `command` to find out more about them!')
@@ -136,7 +135,7 @@ async def info(context,*characterName):
 		await context.send("Character not found")
 	else:
 
-		charinfo = json.loads(open('dependencies/'+name+'.json','r',encoding='utf-8').read())
+		charinfo = json.loads(open('dependencies/GL/'+name+'.json','r',encoding='utf-8').read())
 		e = discord.Embed(
 			title = charinfo['Name'],
 			colour = colors[charinfo['Crystal']],
@@ -144,7 +143,7 @@ async def info(context,*characterName):
 			)
 		e.set_thumbnail(url=charinfo['Picture'])
 		e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
-		print(charinfo["Commands"])
+		#print(charinfo["Commands"])
 		e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
 		#e.add_field(name="Stats",value=charinfo['Stats'],inline=True)
 		#e.add_field(name="Commands",value=charinfo['Commands'],inline=True)
@@ -181,7 +180,7 @@ async def abilities(context,*characterName):
 		await context.send("Character not found")
 	else:
 
-		charinfo = json.loads(open('dependencies/'+name+'.json','r',encoding='utf-8').read())
+		charinfo = json.loads(open('dependencies/GL/'+name+'.json','r',encoding='utf-8').read())
 		e = discord.Embed(
 			title = charinfo['Name'],
 			colour = colors[charinfo['Crystal']],
@@ -209,7 +208,7 @@ async def gear(context,*characterName):
 	except KeyError:
 		await context.send("Character not found")
 	else:
-		charinfo = json.loads(open('dependencies/'+name+'.json','r',encoding='utf-8').read())
+		charinfo = json.loads(open('dependencies/GL/'+name+'.json','r',encoding='utf-8').read())
 		e = discord.Embed(
 			title = charinfo['Name'],
 			colour = colors[charinfo['Crystal']],
@@ -236,7 +235,7 @@ async def stats(context,*characterName):
 	except KeyError:
 		await context.send("Character not found")
 	else:
-		charinfo = json.loads(open('dependencies/'+name+'.json','r',encoding='utf-8').read())
+		charinfo = json.loads(open('dependencies/GL/'+name+'.json','r',encoding='utf-8').read())
 		e = discord.Embed(
 			title = charinfo['Name'],
 			colour = colors[charinfo['Crystal']],
@@ -249,7 +248,136 @@ async def stats(context,*characterName):
 
 		await context.send(embed=e)
 
-##############################
-#tk 
-client.run(TOKEN)
+############################## JAPAN COMMANDS
+
+@client.command()
+async def Jinfo(context,*characterName):
+	'''	
+	Usage is a!info <character name> and will return general information about a bot.
+	'''		
+	try:
+		if len(characterName) == 1:
+			nm = " ".join([f for f in characterName]).capitalize()
+		else:
+			nm = " ".join([f for f in characterName])
+		name = Jchars[nm]
+	except KeyError:
+		await context.send("Character not found")
+	else:
+
+		charinfo = json.loads(open('dependencies/JP/'+name+'.json','r',encoding='utf-8').read())
+		e = discord.Embed(
+			title = charinfo['Name'],
+			colour = colors[charinfo['Crystal']],
+
+			)
+		e.set_thumbnail(url=charinfo['Picture'])
+		e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
+		#print(charinfo["Commands"])
+		e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
+		#e.add_field(name="Stats",value=charinfo['Stats'],inline=True)
+		#e.add_field(name="Commands",value=charinfo['Commands'],inline=True)
+		try:
+			for i in charinfo["Commands"].keys():
+				e.add_field(name=i,value=charinfo["Commands"][i].replace("  "," "),inline=False)				
+			topP = passives[nm]
+
+		except KeyError:
+			e.add_field(name="Recommended Passives",value="Not added",inline=False)
+			await context.send(embed=e)
+			
+		else:
+			for (i,j) in enumerate(topP):
+				if not j:
+					continue
+				e.add_field(name="Passive {}".format(i+1),value=j,inline=False)
+				e.set_footer(text="PLEASE NOTE: Passives are Kite's World Recommendations")
+			await context.send(embed=e)
+		
+
+@client.command()
+async def Jabilities(context,*characterName):
+	'''
+	Usage is a!abilities <character name> and will return command abilities.
+	'''
+	try:
+		if len(characterName) == 1:
+			nm = " ".join([f for f in characterName]).capitalize()
+		else:
+			nm = " ".join([f for f in characterName])
+		name = Jchars[nm]
+	except KeyError:
+		await context.send("Character not found")
+	else:
+
+		charinfo = json.loads(open('dependencies/JP/'+name+'.json','r',encoding='utf-8').read())
+		e = discord.Embed(
+			title = charinfo['Name'],
+			colour = colors[charinfo['Crystal']],
+			)
+		e.set_thumbnail(url=charinfo['Picture'])
+		e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
+		e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
+		for i in charinfo["Commands"].keys():
+			e.add_field(name=i,value=charinfo["Commands"][i].replace("  "," "),inline=False)
+
+		await context.send(embed=e)
+
+
+@client.command()
+async def Jgear(context,*characterName):
+	'''
+	Usage is a!gear <character name> and returns all gear for a character
+	'''
+	try:
+		if len(characterName) == 1:
+			nm = " ".join([f for f in characterName]).capitalize()
+		else:
+			nm = " ".join([f for f in characterName])
+		name = Jchars[nm]
+	except KeyError:
+		await context.send("Character not found")
+	else:
+		charinfo = json.loads(open('dependencies/JP/'+name+'.json','r',encoding='utf-8').read())
+		e = discord.Embed(
+			title = charinfo['Name'],
+			colour = colors[charinfo['Crystal']],
+			)
+		e.set_thumbnail(url=charinfo['Picture'])
+		e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
+		e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
+		for i in charinfo["Weapons"].keys():
+			e.add_field(name=i,value=charinfo["Weapons"][i],inline=False)
+
+		await context.send(embed=e)
+
+@client.command()
+async def Jstats(context,*characterName):
+	'''
+	Usage is a!stats <character name> and returns all stats for a character
+	'''
+	try:
+		if len(characterName) == 1:
+			nm = " ".join([f for f in characterName]).capitalize()
+		else:
+			nm = " ".join([f for f in characterName])
+		name = Jchars[nm]
+	except KeyError:
+		await context.send("Character not found")
+	else:
+		charinfo = json.loads(open('dependencies/JP/'+name+'.json','r',encoding='utf-8').read())
+		e = discord.Embed(
+			title = charinfo['Name'],
+			colour = colors[charinfo['Crystal']],
+			)
+		e.set_thumbnail(url=charinfo['Picture'])
+		e.add_field(name="Crystal Color",value=charinfo['Crystal'],inline=True)
+		e.add_field(name="Weapon Class",value=charinfo['Weapon'], inline=True)
+		for i in charinfo["Stats"].keys():
+			e.add_field(name=i,value=charinfo["Stats"][i],inline=False)
+
+		await context.send(embed=e)
+
+
+client.run('MzM4MTA0ODgzNzkyMzE0Mzc5.XKtLkQ.OxjjFF-0lrUEbDwPJHTcnEwYS0k')
 

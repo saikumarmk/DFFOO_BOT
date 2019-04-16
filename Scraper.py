@@ -1,42 +1,49 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import json
+import time
 
+
+LOCALE = "JP"
 browser=webdriver.Firefox()
-def bs_parse(url):
+
+
+def bs_parse(url,locale=LOCALE):
     browser.get(url)
+    if locale == "JP":
+        browser.find_element_by_xpath("//span[@title='Japan']").click()
+    #browser.find_element_by_xpath("//span[@title='Global']")
     html = browser.page_source
     return BeautifulSoup(html, 'lxml')
 
 # Links
-root = "https://dissidiadb.com"
-charpage = "/characters"
+ROOT = "https://dissidiadb.com"
+CHARPAGE = "/characters"
 
 
-    
 
+chars = json.loads(open('dependencies/{}/charnames.json'.format(LOCALE),'r').read())
 
-#chars = json.loads()
-#chars = json.loads(open('dependencies/charnames.json','r').read())
 
 # Retrieve Page Name
-charpage = bs_parse(root+charpage)
-lst= charpage.body.div.main.div.ul    
+def retrieveNames():    
+    charpage = bs_parse(ROOT+CHARPAGE)
+    lst= charpage.body.div.main.div.ul    
 
-charnames = [l.find("span",{"class":"name"}).string for l in lst] # use this for their name
-print(charnames)
-charurl = [l.find("a",{"class":"imageLink"})['href'][1:] for l in lst]
-chars = dict(zip(charnames,charurl))
-chars["Cecil (DK)"] = "cecil"
-chars.pop("Cecil (Dark Knight)")
+    charnames = [l.find("span",{"class":"name"}).string for l in lst] # use this for their name
+    print(charnames)
+    charurl = [l.find("a",{"class":"imageLink"})['href'][1:] for l in lst]
+    chars = dict(zip(charnames,charurl))
+    chars["Cecil (DK)"] = "cecil"
+    chars.pop("Cecil (Dark Knight)")
 
-with open('dependencies/charnames.json','w') as u:
-    json.dump(chars,u)
+    with open('dependencies/{}/charnames.json'.format(LOCALE),'w') as u:
+        json.dump(chars,u)
 
 
 # Dumps Character Info
 def getCharacter(charName):
-    soup = bs_parse(root+"/"+charName)
+    soup = bs_parse(ROOT+"/"+charName)
     
     # Retrieve Crystal Type and Weapon type
     crystal = soup.find("span",{"class":"icon crystal"})['title']
@@ -50,7 +57,7 @@ def getCharacter(charName):
     picture = soup.find("img",{"class":"artwork_image"})['src']
     print(picture)
 
-    pictureurl = root+picture
+    pictureurl = ROOT+picture
 
 
     # Retrieve Stats
@@ -130,7 +137,10 @@ def getCharacter(charName):
         ef = r.find("td",{"class":"gearEffect"}).div.text
         if r.find("span",{"class":"attrBlock silver"}):
             continue
-        cp = r.find_all("span","attrBlock")[1].text
+        try:
+            cp = r.find_all("span","attrBlock")[1].text
+        except IndexError:
+            cp = "Cannot be equipped"
         nm = "{} CP: {}".format(nm,cp)
         weapons[nm] = ef.encode("ascii", "replace").decode().replace("?"," ")
 
@@ -147,8 +157,17 @@ def getCharacter(charName):
 def update_db():
 	for i in chars.values():
 	    #print(i)
-	    with open('dependencies/'+i+'.json','w') as u:
+	    with open('dependencies/{}/{}.json'.format(LOCALE,i),'w') as u:
 	        json.dump(getCharacter(i),u)
 
+def full_update():
+    LOCALE = "GL"
+    retrieveNames()
+    update_db()
+    LOCALE = "JP"
+    retrieveNames()
+    update_db()
 
-update_db()
+#update_db()
+#update_db()
+
