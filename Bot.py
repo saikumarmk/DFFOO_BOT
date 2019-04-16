@@ -28,7 +28,7 @@ passives.pop('')
 
 # Environment variables
 
-#TOKEN = os.environ['token']
+TOKEN = os.environ['token']
 client = commands.Bot(command_prefix = "a!")
 client.remove_command('help')
 # What is an event?
@@ -379,5 +379,5 @@ async def Jstats(context,*characterName):
 		await context.send(embed=e)
 
 
-client.run('MzM4MTA0ODgzNzkyMzE0Mzc5.XKtLkQ.OxjjFF-0lrUEbDwPJHTcnEwYS0k')
+client.run(TOKEN)
 
