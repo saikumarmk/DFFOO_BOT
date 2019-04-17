@@ -73,7 +73,7 @@ class Commands:
 
 	@commands.command()
 	async def info(self,context,*characterName):
-		'''a!info [name]\nDisplays overall character information (e.g. crystal color, recommended passives).'''
+		'''Displays overall character information (e.g. crystal color, recommended passives).'''
 		indexedName,displayName = self.retrieveName(characterName,"GL")
 		if indexedName == "Character not found!":
 			await context.send("Character not found!".format(characterName))
@@ -100,7 +100,7 @@ class Commands:
 
 	@commands.command()
 	async def abilities(self,context,*characterName):
-		'''a!abilities [name]\nDisplays a description for each of a character's command abilities.'''
+		'''Displays a description for each of a character's command abilities.'''
 		indexedName,displayName = self.retrieveName(characterName,"GL")
 		if indexedName == "Character not found!":
 			await context.send("Character not found!".format(characterName))
@@ -113,7 +113,7 @@ class Commands:
 
 	@commands.command()
 	async def gear(self,context,*characterName):
-		'''a!gear [name]\nDisplays available character gear.'''
+		'''Displays available character gear.'''
 		indexedName,displayName = self.retrieveName(characterName,"GL")
 		if indexedName == "Character not found!":
 			await context.send("Character not found!".format(characterName))
@@ -126,7 +126,7 @@ class Commands:
 
 	@commands.command()
 	async def Jinfo(self,context,*characterName):
-		'''a!Jinfo [name]\nDisplays overall JP character information.'''
+		'''Displays overall JP character information.'''
 		indexedName,displayName = self.retrieveName(characterName,"JP")
 		if indexedName == "Character not found!":
 			await context.send("Character not found!".format(characterName))
@@ -153,7 +153,7 @@ class Commands:
 
 	@commands.command()
 	async def Jabilities(self,context,*characterName):
-		'''a!Jabilities [name]\nDisplays a description for each of a character's command abilities.'''
+		'''Displays a description for each of a character's command abilities.'''
 		indexedName,displayName = self.retrieveName(characterName,"JP")
 		if indexedName == "Character not found!":
 			await context.send("Character not found!".format(characterName))
@@ -166,7 +166,7 @@ class Commands:
 
 	@commands.command()
 	async def Jgear(self,context,*characterName):
-		'''a!Jgear [name]\nDisplays available character gear.'''
+		'''Displays available character gear.'''
 		indexedName,displayName = self.retrieveName(characterName,"JP")
 		if indexedName == "Character not found!":
 			await context.send("Character not found!".format(characterName))
