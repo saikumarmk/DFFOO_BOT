@@ -5,6 +5,9 @@ import time
 
 
 LOCALE = "JP"
+ROOT = "https://dissidiadb.com"
+CHARPAGE = "/characters"
+
 browser=webdriver.Firefox()
 
 
@@ -16,14 +19,6 @@ def bs_parse(url,locale=LOCALE):
     html = browser.page_source
     return BeautifulSoup(html, 'lxml')
 
-# Links
-ROOT = "https://dissidiadb.com"
-CHARPAGE = "/characters"
-
-
-
-chars = json.loads(open('dependencies/{}/charnames.json'.format(LOCALE),'r').read())
-
 
 # Retrieve Page Name
 def retrieveNames():    
@@ -31,14 +26,13 @@ def retrieveNames():
     lst= charpage.body.div.main.div.ul    
 
     charnames = [l.find("span",{"class":"name"}).string for l in lst] # use this for their name
-    print(charnames)
     charurl = [l.find("a",{"class":"imageLink"})['href'][1:] for l in lst]
-    chars = dict(zip(charnames,charurl))
-    chars["Cecil (DK)"] = "cecil"
-    chars.pop("Cecil (Dark Knight)")
+    CHARACTERS = dict(zip(charnames,charurl))
+    CHARACTERS["Cecil (DK)"] = "cecil"
+    CHARACTERS.pop("Cecil (Dark Knight)")
 
     with open('dependencies/{}/charnames.json'.format(LOCALE),'w') as u:
-        json.dump(chars,u)
+        json.dump(CHARACTERS,u)
 
 
 # Dumps Character Info
@@ -49,16 +43,12 @@ def getCharacter(charName):
     crystal = soup.find("span",{"class":"icon crystal"})['title']
     weapon = soup.find("p",{"class":"weapon-type"}).find("span",{"class":"icon"})['title']
 
-
     # Retrieve Name
     name = soup.find("h2",{"class":"header"}).string
 
     # Retrieve Picture URL
     picture = soup.find("img",{"class":"artwork_image"})['src']
-    print(picture)
-
     pictureurl = ROOT+picture
-
 
     # Retrieve Stats
     table = soup.find("div",{"class":"stats"}).table
@@ -83,13 +73,11 @@ def getCharacter(charName):
         # If not, then it's the first span
         # We fix this by checking if there exists a span with class="small icon"
         cols = row.find('td',{"class":"ability"}).find_all("div")[0].text
-
         icons = set(row.find('td',{"class":"description"}).find_all("div")[0].find_all("span","small icon"))
         allspans = set(row.find('td',{"class":"description"}).find_all("div")[0].find_all("span"))
         nm = allspans - icons
         nmn = nm.pop()
         #nams = row.find('td',{"class":"description"}).find_all("span")[1].text
-
         ltx = " ".join([n if type(n)==type(nmn.contents[0]) else "" for n in nmn.contents])
         commands[cols] = ltx # Get rid of empty values
 
@@ -154,20 +142,22 @@ def getCharacter(charName):
             "Passives":passives,
             "Weapons":weapons}
 
+
+
 def update_db():
-	for i in chars.values():
-	    #print(i)
+    retrieveNames()
+    CHARACTERS = json.loads(open('dependencies/{}/charnames.json'.format(LOCALE),'r').read())
+	for i in CHARACTERS.values():
 	    with open('dependencies/{}/{}.json'.format(LOCALE,i),'w') as u:
 	        json.dump(getCharacter(i),u)
 
+
+
 def full_update():
     LOCALE = "GL"
-    retrieveNames()
     update_db()
     LOCALE = "JP"
-    retrieveNames()
     update_db()
 
-#update_db()
-#update_db()
+
 
