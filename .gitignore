@@ -3,3 +3,8 @@ __pycache__
 geckodriver.exe
 geckodriver.log
 data
+*.pyc
+*.csv
+*.exe
+*.log
+*.json
