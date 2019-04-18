@@ -31,7 +31,7 @@ def retrieveNames():
     CHARACTERS["Cecil (DK)"] = "cecil"
     CHARACTERS.pop("Cecil (Dark Knight)")
 
-    with open('data/{}/charnames.json'.format(LOCALE),'w') as u:
+    with open('data/{}/charnames.json'.format(LOCALE),'w+') as u:
         json.dump(CHARACTERS,u)
 
 
