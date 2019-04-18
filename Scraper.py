@@ -147,9 +147,9 @@ def getCharacter(charName):
 def update_db():
     retrieveNames()
     CHARACTERS = json.loads(open('dependencies/{}/charnames.json'.format(LOCALE),'r').read())
-	for i in CHARACTERS.values():
-	    with open('dependencies/{}/{}.json'.format(LOCALE,i),'w') as u:
-	        json.dump(getCharacter(i),u)
+    for i in CHARACTERS.values():
+        with open('dependencies/{}/{}.json'.format(LOCALE,i),'w') as u:
+            json.dump(getCharacter(i),u)
 
 
 
