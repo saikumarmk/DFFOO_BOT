@@ -31,7 +31,7 @@ def retrieveNames():
     CHARACTERS["Cecil (DK)"] = "cecil"
     CHARACTERS.pop("Cecil (Dark Knight)")
 
-    with open('dependencies/{}/charnames.json'.format(LOCALE),'w') as u:
+    with open('data/{}/charnames.json'.format(LOCALE),'w') as u:
         json.dump(CHARACTERS,u)
 
 
@@ -146,9 +146,9 @@ def getCharacter(charName):
 
 def update_db():
     retrieveNames()
-    CHARACTERS = json.loads(open('dependencies/{}/charnames.json'.format(LOCALE),'r').read())
+    CHARACTERS = json.loads(open('data/{}/charnames.json'.format(LOCALE),'r').read())
     for i in CHARACTERS.values():
-        with open('dependencies/{}/{}.json'.format(LOCALE,i),'w') as u:
+        with open('data/{}/{}.json'.format(LOCALE,i),'w') as u:
             json.dump(getCharacter(i),u)
 
 
